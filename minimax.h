@@ -16,6 +16,7 @@ public:
 
 	T play(T game,int player){ //quel player joue l'ordinateur
 		vector<T> nexts = game.generateNextMoves(player);
+		//cout<<"minimax 21 -> Taille "<<nexts.size()<<endl;
 		T res;
 		if(player == 0){ //minimiser
 			int min = evaluate(nexts[0], player, depth);
