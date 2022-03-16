@@ -1,2 +1,2 @@
 main:
-	g++ main.cpp -g -o exe
+	g++ -o main main.cpp  `sdl2-config --cflags --libs`  -lSDL2_image
