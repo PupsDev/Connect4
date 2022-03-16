@@ -1,1 +1,1 @@
-g++ -o grid grid.cpp  `sdl2-config --cflags --libs` && ./grid
+rm -f main && make && ./main

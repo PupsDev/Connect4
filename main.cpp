@@ -114,6 +114,27 @@ void drawCoin(SDL_Renderer * renderer, int x, int y, SDL_Color color)
     SDL_RenderFillCircle(renderer, x + grid_cell_size_2 + offset, y+ grid_cell_size_2+ offset, grid_cell_size_2);
 
 }
+void drawCoinTextured(SDL_Renderer * renderer, int x, int y, SDL_Texture* texture)
+{
+
+    // SDL_RenderFillRect(renderer, &grid_cursor_ghost);
+    //SDL_RenderDrawCircle(renderer, x + grid_cell_size_2 + offset, y+ grid_cell_size_2+ offset, grid_cell_size_2);
+
+    //SDL_RenderFillCircle(renderer, x + grid_cell_size_2 + offset, y+ grid_cell_size_2+ offset, grid_cell_size_2);
+    
+    // SDL_Rect dest = { (grid_width *grid_cell_size)/2-offset,
+    //                         ( grid_height *grid_cell_size)/2+offset,
+                            
+    //                          grid_cell_size/2,
+    //                           grid_cell_size/2};//un SDL_Rect qui sers de destination à l'image
+    SDL_Rect dest = { x+offset,
+                         y+offset,
+                            
+                             grid_cell_size/2,
+                              grid_cell_size/2};//un SDL_Rect qui sers de destination à l'image
+    SDL_RenderCopy(renderer, texture, NULL, &dest); // copie de surface grâce au SDL_Renderer
+
+}
 int main()
 {
 
@@ -133,6 +154,11 @@ int main()
 
     std::vector<std::vector<int>> columns(7);
         
+
+    SDL_Surface* surfaceRouge = IMG_Load("rouge.png");
+    SDL_Surface* surfaceBleu = IMG_Load("bleu.png");
+
+
 
 
     // + 1 so that the last grid lines fit in the screen.
@@ -168,6 +194,7 @@ int main()
 
     SDL_Window *window;
     SDL_Renderer *renderer;
+
     if (SDL_CreateWindowAndRenderer(window_width, window_height, 0, &window,
                                     &renderer) < 0) {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
@@ -176,6 +203,8 @@ int main()
     }
     
 
+    SDL_Texture * textureRouge = SDL_CreateTextureFromSurface(renderer, surfaceRouge);
+    SDL_Texture * textureBleu = SDL_CreateTextureFromSurface(renderer, surfaceBleu);
     SDL_SetWindowTitle(window, "SDL Grid");
 
     SDL_bool quit = SDL_FALSE;
@@ -253,8 +282,8 @@ int main()
         }
 
         // Draw grid background.
-        SDL_SetRenderDrawColor(renderer, blue.r, blue.g,
-                               blue.b, blue.a);
+        SDL_SetRenderDrawColor(renderer, yellow.r, yellow.g,
+                               yellow.b, yellow.a);
         SDL_RenderClear(renderer);
 
        // Draw grid lines.
@@ -264,6 +293,8 @@ int main()
             {
 
                 drawCoin(renderer, y - grid_cell_size_2 - offset, x - grid_cell_size_2 - offset, white);
+                //drawCoinT(renderer, y - grid_cell_size_2 - offset, x - grid_cell_size_2 - offset, white);
+
             }
         }
 
@@ -271,6 +302,8 @@ int main()
         if (mouse_active && mouse_hover)
         {
             drawCoin(renderer, grid_cursor_ghost.x, grid_cursor_ghost.y, gray);
+            //drawCoinT(renderer, grid_cursor_ghost.x, grid_cursor_ghost.y, gray);
+
         }
         // Draw coins
         for (int i = 0; i < columns.size(); i++)
@@ -281,19 +314,22 @@ int main()
                 if (columns[i][j] == 1)
                 {
 
-                    drawCoin(renderer, (i * grid_cell_size), ((5 - j) * grid_cell_size), red);
+                    //drawCoin(renderer, (i * grid_cell_size), ((5 - j) * grid_cell_size), red);
+                    drawCoinTextured(renderer, (i * grid_cell_size), ((5 - j) * grid_cell_size), textureRouge);
+
                 }
                 else
                 {
-                    drawCoin(renderer, (i * grid_cell_size), ((5 - j) * grid_cell_size), yellow);
+                    //drawCoin(renderer, (i * grid_cell_size), ((5 - j) * grid_cell_size), yellow);
+                    drawCoinTextured(renderer, (i * grid_cell_size), ((5 - j) * grid_cell_size), textureBleu);
+
                 }
             }
         }
     
 
-        SDL_RenderPresent(renderer);
+    SDL_RenderPresent(renderer);
 
-        
         if(played){
             current = minimax.play(current,turn);
             turn = 1-turn;
@@ -302,7 +338,6 @@ int main()
         }
         
 
-        // Draw coins
         for (int i = 0; i < columns.size(); i++)
         {
             int columnsize = columns[i].size();
@@ -311,11 +346,15 @@ int main()
                 if (columns[i][j] == 1)
                 {
 
-                    drawCoin(renderer, (i * grid_cell_size), ((5 - j) * grid_cell_size), red);
+                    //drawCoin(renderer, (i * grid_cell_size), ((5 - j) * grid_cell_size), red);
+                    drawCoinTextured(renderer, (i * grid_cell_size), ((5 - j) * grid_cell_size), textureRouge);
+
                 }
                 else
                 {
-                    drawCoin(renderer, (i * grid_cell_size), ((5 - j) * grid_cell_size), yellow);
+                    //drawCoin(renderer, (i * grid_cell_size), ((5 - j) * grid_cell_size), yellow);
+                    drawCoinTextured(renderer, (i * grid_cell_size), ((5 - j) * grid_cell_size), textureBleu);
+
                 }
             }
         }
@@ -336,24 +375,7 @@ int main()
     }
 
     }
-                SDL_Surface* surface = IMG_Load("image.jpeg");
-    if(!surface)
-    {
-        printf("Erreur de chargement de l'image : %s",SDL_GetError());
-        return -1;
-    }
-    SDL_Texture * texture = SDL_CreateTextureFromSurface(renderer, surface);
-      if (texture == NULL) {
-    printf("%s\n", SDL_GetError()); //Returns "Invalid Renderer".
-    return 1; 
-  } 
-    if (texture)
-    {
-        SDL_Rect dest = { (grid_width *grid_cell_size)/2,(grid_height *grid_cell_size)/2, 200, 200};//un SDL_Rect qui sers de destination à l'image
-        SDL_RenderCopy(renderer, texture, NULL, &dest); // copie de surface grâce au SDL_Renderer
 
-        SDL_RenderPresent(renderer);
-    }
 
 
     SDL_DestroyRenderer(renderer);
