@@ -6,10 +6,10 @@
 #include "minimax.h"
 
 const int grid_cell_size = 80;
-const int offset =20;
-const int grid_cell_size_2=grid_cell_size/2 - offset;
+const int offset = 20;
+const int grid_cell_size_2 = grid_cell_size / 2 - offset;
 
-int SDL_RenderDrawCircle(SDL_Renderer * renderer, int x, int y, int radius)
+int SDL_RenderDrawCircle(SDL_Renderer *renderer, int x, int y, int radius)
 {
     int offsetx, offsety, d;
     int status;
@@ -18,10 +18,11 @@ int SDL_RenderDrawCircle(SDL_Renderer * renderer, int x, int y, int radius)
 
     offsetx = 0;
     offsety = radius;
-    d = radius -1;
+    d = radius - 1;
     status = 0;
 
-    while (offsety >= offsetx) {
+    while (offsety >= offsetx)
+    {
         status += SDL_RenderDrawPoint(renderer, x + offsetx, y + offsety);
         status += SDL_RenderDrawPoint(renderer, x + offsety, y + offsetx);
         status += SDL_RenderDrawPoint(renderer, x - offsetx, y + offsety);
@@ -31,20 +32,24 @@ int SDL_RenderDrawCircle(SDL_Renderer * renderer, int x, int y, int radius)
         status += SDL_RenderDrawPoint(renderer, x - offsetx, y - offsety);
         status += SDL_RenderDrawPoint(renderer, x - offsety, y - offsetx);
 
-        if (status < 0) {
+        if (status < 0)
+        {
             status = -1;
             break;
         }
 
-        if (d >= 2*offsetx) {
-            d -= 2*offsetx + 1;
-            offsetx +=1;
+        if (d >= 2 * offsetx)
+        {
+            d -= 2 * offsetx + 1;
+            offsetx += 1;
         }
-        else if (d < 2 * (radius - offsety)) {
+        else if (d < 2 * (radius - offsety))
+        {
             d += 2 * offsety - 1;
             offsety -= 1;
         }
-        else {
+        else
+        {
             d += 2 * (offsety - offsetx - 1);
             offsety -= 1;
             offsetx += 1;
@@ -54,8 +59,7 @@ int SDL_RenderDrawCircle(SDL_Renderer * renderer, int x, int y, int radius)
     return status;
 }
 
-
-int SDL_RenderFillCircle(SDL_Renderer * renderer, int x, int y, int radius)
+int SDL_RenderFillCircle(SDL_Renderer *renderer, int x, int y, int radius)
 {
     int offsetx, offsety, d;
     int status;
@@ -64,10 +68,11 @@ int SDL_RenderFillCircle(SDL_Renderer * renderer, int x, int y, int radius)
 
     offsetx = 0;
     offsety = radius;
-    d = radius -1;
+    d = radius - 1;
     status = 0;
 
-    while (offsety >= offsetx) {
+    while (offsety >= offsetx)
+    {
 
         status += SDL_RenderDrawLine(renderer, x - offsety, y + offsetx,
                                      x + offsety, y + offsetx);
@@ -78,20 +83,24 @@ int SDL_RenderFillCircle(SDL_Renderer * renderer, int x, int y, int radius)
         status += SDL_RenderDrawLine(renderer, x - offsety, y - offsetx,
                                      x + offsety, y - offsetx);
 
-        if (status < 0) {
+        if (status < 0)
+        {
             status = -1;
             break;
         }
 
-        if (d >= 2*offsetx) {
-            d -= 2*offsetx + 1;
-            offsetx +=1;
+        if (d >= 2 * offsetx)
+        {
+            d -= 2 * offsetx + 1;
+            offsetx += 1;
         }
-        else if (d < 2 * (radius - offsety)) {
+        else if (d < 2 * (radius - offsety))
+        {
             d += 2 * offsety - 1;
             offsety -= 1;
         }
-        else {
+        else
+        {
             d += 2 * (offsety - offsetx - 1);
             offsety -= 1;
             offsetx += 1;
@@ -101,25 +110,24 @@ int SDL_RenderFillCircle(SDL_Renderer * renderer, int x, int y, int radius)
     return status;
 }
 
-void drawCoin(SDL_Renderer * renderer, int x, int y, SDL_Color color)
+void drawCoin(SDL_Renderer *renderer, int x, int y, SDL_Color color)
 {
     SDL_SetRenderDrawColor(renderer, color.r,
-                            color.g,
-                            color.b,
-                            color.a);
+                           color.g,
+                           color.b,
+                           color.a);
     // SDL_RenderFillRect(renderer, &grid_cursor_ghost);
-    SDL_RenderDrawCircle(renderer, x + grid_cell_size_2 + offset, y+ grid_cell_size_2+ offset, grid_cell_size_2);
+    SDL_RenderDrawCircle(renderer, x + grid_cell_size_2 + offset, y + grid_cell_size_2 + offset, grid_cell_size_2);
 
-    SDL_RenderFillCircle(renderer, x + grid_cell_size_2 + offset, y+ grid_cell_size_2+ offset, grid_cell_size_2);
-
+    SDL_RenderFillCircle(renderer, x + grid_cell_size_2 + offset, y + grid_cell_size_2 + offset, grid_cell_size_2);
 }
 int main()
 {
 
     Minimax<Puissance4> minimax;
-	minimax.depth = 5;
+    minimax.depth = 100;
 
-	auto current = Puissance4();
+    auto current = Puissance4();
 
     bool played = false;
 
@@ -131,8 +139,6 @@ int main()
     int colonne_selected;
 
     std::vector<std::vector<int>> columns(7);
-
-
 
     // + 1 so that the last grid lines fit in the screen.
     int window_width = (grid_width * grid_cell_size) + 1;
@@ -151,7 +157,7 @@ int main()
     SDL_Rect grid_cursor_ghost = {grid_cursor.x, grid_cursor.y, grid_cell_size,
                                   grid_cell_size};
 
-// Color palette.
+    // Color palette.
     SDL_Color blue = {2, 43, 220}; // Barely Blue
     SDL_Color white{255, 255, 255};
     SDL_Color gray{200, 200, 200};
@@ -159,7 +165,8 @@ int main()
     SDL_Color green{0, 255, 0};
     SDL_Color yellow{255, 215, 0};
 
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+    {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Initialize SDL: %s",
                      SDL_GetError());
         return EXIT_FAILURE;
@@ -168,26 +175,30 @@ int main()
     SDL_Window *window;
     SDL_Renderer *renderer;
     if (SDL_CreateWindowAndRenderer(window_width, window_height, 0, &window,
-                                    &renderer) < 0) {
+                                    &renderer) < 0)
+    {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
                      "Create window and renderer: %s", SDL_GetError());
         return EXIT_FAILURE;
     }
-    
 
     SDL_SetWindowTitle(window, "SDL Grid");
 
     SDL_bool quit = SDL_FALSE;
     SDL_bool mouse_active = SDL_FALSE;
     SDL_bool mouse_hover = SDL_FALSE;
-    colonne_selected =0;
+    colonne_selected = 0;
 
-    while (!quit) {
+    while (!quit)
+    {
         SDL_Event event;
-        while (SDL_PollEvent(&event)) {
-            switch (event.type) {
+        while (SDL_PollEvent(&event))
+        {
+            switch (event.type)
+            {
             case SDL_KEYDOWN:
-                switch (event.key.keysym.sym) {
+                switch (event.key.keysym.sym)
+                {
                 case SDLK_w:
                 case SDLK_UP:
                     grid_cursor.y -= grid_cell_size;
@@ -210,14 +221,13 @@ int main()
                 grid_cursor.x = (event.motion.x / grid_cell_size) * grid_cell_size;
                 grid_cursor.y = (event.motion.y / grid_cell_size) * grid_cell_size;
                 // std::cout << "("<< grid_cursor.y/grid_cell_size <<", "<< grid_cursor.x/grid_cell_size <<")" << std::endl;
-                colonne_selected = grid_cursor.x/grid_cell_size;
+                colonne_selected = grid_cursor.x / grid_cell_size;
 
-                current = current.play(turn,colonne_selected);
+                current = current.play(turn, colonne_selected);
                 columns = current.board;
 
-                turn = 1-turn;
+                turn = 1 - turn;
                 played = true;
-
 
                 // if(turn ==0)
                 // {
@@ -256,7 +266,7 @@ int main()
                                blue.b, blue.a);
         SDL_RenderClear(renderer);
 
-       // Draw grid lines.
+        // Draw grid lines.
         for (int x = grid_cell_size_2 + offset; x < grid_width * grid_cell_size; x += grid_cell_size)
         {
             for (int y = grid_cell_size_2 + offset; y < grid_width * grid_cell_size; y += grid_cell_size)
@@ -288,18 +298,16 @@ int main()
                 }
             }
         }
-    
 
         SDL_RenderPresent(renderer);
 
-        
-        if(played){
-            current = minimax.play(current,turn);
-            turn = 1-turn;
+        if (played)
+        {
+            current = minimax.play(current, turn);
+            turn = 1 - turn;
             played = false;
-            columns = current.board;            
+            columns = current.board;
         }
-        
 
         // Draw coins
         for (int i = 0; i < columns.size(); i++)
@@ -319,21 +327,24 @@ int main()
             }
         }
 
-
-
         SDL_RenderPresent(renderer);
 
-    if(current.end()){
-        if(current.evaluate(1) == 0){
-            cout<<"Égalité"<<endl;
-        }else if(current.evaluate(1)<0){
-            cout<<"Joueur 1 a gagné"<<endl;
-        } else{
-            cout<<"Joueur 2 a gagné"<<endl;
+        if (current.end())
+        {
+            if (current.evaluate(1) == 0)
+            {
+                cout << "Égalité" << endl;
+            }
+            else if (current.evaluate(1) < 0)
+            {
+                cout << "Joueur 1 a gagné" << endl;
+            }
+            else
+            {
+                cout << "Joueur 2 a gagné" << endl;
+            }
+            break;
         }
-        break;
-    }
-
     }
 
     SDL_DestroyRenderer(renderer);
