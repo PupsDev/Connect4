@@ -9,6 +9,8 @@ public:
     int sizeX = 7;
     int sizeY = 6;
 
+	string victoryType;
+
     vector<vector<int>> board;
 
     Puissance4(){
@@ -77,6 +79,7 @@ public:
     }
 
     int evaluate(int depth){
+
         
 		int maxAlign = 1;
 		int prec = 0;
@@ -101,6 +104,7 @@ public:
 				if(x!= 0 && precHorizontal[y] != 0 && (board[x].size()>y ? board[x][y]+1 : 0) == precHorizontal[y]){
 					maxAlignHorizontal[y] ++;
 					if(maxAlignHorizontal[y] >= 4){
+						victoryType = "Victoire horizontal";
 						return precHorizontal[y]==1 ? - depth : depth;
 					}
 				}else{
@@ -111,7 +115,9 @@ public:
 				if(y!=0 && prec != 0 && (board[x].size()>y ? board[x][y]+1 : 0) == prec){
 					maxAlign ++;
 					if(maxAlign >= 4){
+						victoryType = "Victoire vertical";
 						return prec==1 ? - depth : depth;
+						
 					}
 				}else{
 					maxAlign = 1;
@@ -141,6 +147,8 @@ public:
 				if(prec != 0 && (board[x].size()>y ? board[x][y]+1 : 0) == prec){
 					maxAlign ++;
 					if(maxAlign >= 4){
+						victoryType = "Victoire diago droite";
+
 						return prec==1 ? - depth : depth;
                         
 					}
@@ -161,22 +169,29 @@ public:
 
 
 		sy = 0;
-		sx = 4-1 ;
+		sx = 4-1;
 
 		while(sy<=sizeY - 4){
 			int y = sy;
 			int x = sx;
 
 			maxAlign = 1;
-            x--;
-            y++;
-			prec = (board[x].size()>y ? board[x][y]+1 : 0);
+            //x--;
+            //y++;
+
+			//cout<<"x : "<<x<<" y : "<<y<<endl;
+			//cout<<"board[x+1].size() : "<<board[x+1].size()<<endl;
+			
+			//prec = (board[x].size()>y ? board[x][y]+1 : 0);
+			prec = 0;
             
 
 			while(x>=0 && y<sizeY){
 				if(prec != 0 && (board[x].size()>y ? board[x][y]+1 : 0) == prec){
 					maxAlign ++;
 					if(maxAlign >= 4){
+						victoryType = "Victoire diago gauche";
+
 						return prec==1 ? - depth : depth;
 					}
 				}else{
@@ -187,7 +202,7 @@ public:
 				x--;
 			}
 
-			if(sx<sizeX){
+			if(sx<sizeX-1){
 				sx++;
 			}else{
 				sy++;
@@ -200,7 +215,7 @@ public:
     }
 
     void print(){
-        for(int i = 0 ; i < sizeY ; i ++){
+        for(int i = sizeY-1 ; i >= 0 ; i --){
             for(int j = 0 ; j < sizeX ; j ++){   
                 cout<<(board[j].size()>i ? board[j][i] == 0 ? " O " : " X " : " _ ");
 			}
