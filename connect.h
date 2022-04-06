@@ -1,4 +1,6 @@
 #include <vector>
+#include <algorithm>
+#include <random>
 
 using namespace std;
 
@@ -12,6 +14,10 @@ public:
 	string victoryType;
 
     vector<vector<int>> board;
+
+	//default_random_engine rng = std::default_random_engine {};
+	
+
 
     Puissance4(){
         board = vector<vector<int>>(sizeX);
@@ -34,10 +40,15 @@ public:
         vector<Puissance4> res = vector<Puissance4>(0);
         //print();
         for(int i = 0 ; i < board.size() ; i ++){
-            //cout<<"i : "<<i<<endl;
+            //cout<<"i : "<<i<<endl;#include <algorithm>
             if(!isColumnFull(i))
             res.push_back(play(player, i));
         }
+
+		//std::shuffle(std::begin(res), std::end(res), rng);
+		std::random_shuffle(res.begin(), res.end());
+
+
         return res; 
     }
 
@@ -137,10 +148,11 @@ public:
 			int x = sx;
 
 			maxAlign = 1;
-            x++;
-            y++;
+            //x++;
+            //y++;
 
-			prec = (board[x].size()>y ? board[x][y]+1 : 0);
+			//prec = (board[x].size()>y ? board[x][y]+1 : 0);
+			prec = 0;
  
 
 			while(x<sizeX && y<sizeY){

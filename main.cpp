@@ -162,7 +162,7 @@ int main()
 {
 
     Minimax<Puissance4> minimax;
-    minimax.depth = 9;
+    minimax.depth = 8;
 
     auto current = Puissance4();
 
