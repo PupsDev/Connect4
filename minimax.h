@@ -121,6 +121,7 @@ public:
 					}
 					if (beta <= alpha)
 					{
+						// std::cout << "prune minimiser" << std::endl;
 						break;
 					}
 				}
@@ -144,6 +145,7 @@ public:
 					}
 					if (beta <= alpha)
 					{
+						// std::cout << "prune maximiser" << std::endl;
 						break;
 					}
 				}

@@ -7,7 +7,7 @@
 #include "minimax.h"
 
 const int grid_cell_size = 120;
-const int offset = 30;
+const int offset = 20;
 const int grid_cell_size_2 = grid_cell_size / 2 - offset;
 
 int SDL_RenderDrawCircle(SDL_Renderer *renderer, int x, int y, int radius)
@@ -155,14 +155,14 @@ void drawCoinTexturedFull(SDL_Renderer *renderer, int i, int j, int x, int y, SD
     imgPartRect.y = j * 240;
     imgPartRect.w = 240;
     imgPartRect.h = 240;
-    SDL_Rect dest = {x + offset, y + offset, grid_cell_size / 2, grid_cell_size / 2}; // un SDL_Rect qui sers de destination à l'image
-    SDL_RenderCopy(renderer, texture, &imgPartRect, &dest);                           // copie de surface grâce au SDL_Renderer
+    SDL_Rect dest = {x + offset - 2, y + offset - 2, grid_cell_size / 2 + 25, grid_cell_size / 2 + 25}; // un SDL_Rect qui sers de destination à l'image
+    SDL_RenderCopy(renderer, texture, &imgPartRect, &dest);                                             // copie de surface grâce au SDL_Renderer
 }
 int main()
 {
 
     Minimax<Puissance4> minimax;
-    minimax.depth = 7;
+    minimax.depth = 9;
 
     auto current = Puissance4();
 
@@ -404,6 +404,7 @@ int main()
             {
                 cout << "Joueur 2 a gagné" << endl;
             }
+            sleep(5);
             break;
         }
     }
