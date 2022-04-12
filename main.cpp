@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include <vector>
 #include "SDL_image.h"
+#include <unistd.h>
 
 #include "connect.h"
 #include "minimax.h"
@@ -162,11 +163,33 @@ void drawCoinTexturedFull(SDL_Renderer *renderer, int i, int j, int x, int y, SD
     SDL_Rect dest = {x + offset - 2, y + offset - 2, grid_cell_size / 2 + 25, grid_cell_size / 2 + 25}; // un SDL_Rect qui sers de destination à l'image
     SDL_RenderCopy(renderer, texture, &imgPartRect, &dest);                                             // copie de surface grâce au SDL_Renderer
 }
-int main()
+int main(int argc, char *argv[])
 {
 
-    Minimax<Puissance4> minimax;
-    minimax.depth = FACILE;
+    if (argc != 2) {
+        printf("Usage: ./main difficulté (1 2 3)\n");
+        exit(EXIT_FAILURE);
+    }
+        Minimax<Puissance4> minimax;
+
+    if(atoi(argv[1])==1)
+    {
+        minimax.depth = FACILE;
+         printf("Difficulté choisie : Facile \n");
+    }
+    else if(atoi(argv[1])==2)
+    {
+        minimax.depth = NORMAL;
+        printf("Difficulté choisie : Normale \n");
+
+    }
+    else if(atoi(argv[1])==3)
+    {
+        minimax.depth = DIFFICILE;
+        printf("Difficulté choisie : Difficile \n");
+
+    }
+    
 
     auto current = Puissance4();
 
@@ -409,7 +432,7 @@ int main()
             {
                 cout << "Joueur 2 a gagné, " << current.victoryType << endl;
             }
-            sleep(3);
+            usleep(3000000);
             current.print();
             break;
         }
