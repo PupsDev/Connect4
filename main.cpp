@@ -274,7 +274,7 @@ int main()
                 colonne_selected = grid_cursor.x / grid_cell_size;
 
                 current = current.play(turn, colonne_selected);
-                cout<<colonne_selected<<" ";
+                cout << colonne_selected << " ";
 
                 columns = current.board;
 
@@ -399,13 +399,13 @@ int main()
             }
             else if (current.evaluate(1) < 0)
             {
-                cout << "Joueur 1 a gagné, " <<current.victoryType<<endl;
+                cout << "Joueur 1 a gagné, " << current.victoryType << endl;
             }
             else
             {
-                cout << "Joueur 2 a gagné, " <<current.victoryType<<endl;
+                cout << "Joueur 2 a gagné, " << current.victoryType << endl;
             }
-            //sleep(5);
+            sleep(3);
             current.print();
             break;
         }
