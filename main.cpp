@@ -10,6 +10,10 @@ const int grid_cell_size = 120;
 const int offset = 20;
 const int grid_cell_size_2 = grid_cell_size / 2 - offset;
 
+int FACILE = 4;
+int NORMAL = 6;
+int DIFFICILE = 8;
+
 int SDL_RenderDrawCircle(SDL_Renderer *renderer, int x, int y, int radius)
 {
     int offsetx, offsety, d;
@@ -162,7 +166,7 @@ int main()
 {
 
     Minimax<Puissance4> minimax;
-    minimax.depth = 8;
+    minimax.depth = FACILE;
 
     auto current = Puissance4();
 
